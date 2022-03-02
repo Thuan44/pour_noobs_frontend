@@ -6,9 +6,11 @@
 
 <script>
 import axios from "axios"
+import Navbar from "@/components/NavbarComponent.vue"
 
 export default {
     name: "Login",
+    components: {Navbar},
     setup () {
         const postApiUrl = import.meta.env.VITE_AUTH_API_URL
         

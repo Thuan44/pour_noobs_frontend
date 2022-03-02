@@ -1,6 +1,20 @@
 <template>
+  <NavbarComponent></NavbarComponent>
   <router-view></router-view>
 </template>
+
+<script>
+import Navbar from "@/components/NavbarComponent.vue"
+import NavbarComponent from "./components/NavbarComponent.vue"
+
+export default {
+  components: { Navbar, NavbarComponent },
+  setup() {
+
+    return {}
+  }
+}
+</script>
 
 <style>
 #app {
@@ -9,6 +23,8 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 </style>
