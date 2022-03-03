@@ -17,10 +17,19 @@
                         aria-label="Rechercher une formation"
                         aria-describedby="button-addon2"
                     />
-                    <button class="btn search-btn" type="button">Rechercher</button>
+                    <button class="btn search-btn" type="button">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
                 </div>
-                <div class="premium-container"></div>
-                <div class="auth-container"></div>
+                <div class="premium-container">
+                    <a href="#" class="btn premium-btn">
+                        <i class="fa-solid fa-star me-2"></i> Premium
+                    </a>
+                </div>
+                <div class="auth-container">
+                    <a href="#" class="btn login-btn">Se connecter</a>
+                    <a href="#" class="btn register-btn">Inscrivez-vous !</a>
+                </div>
             </div>
             <div class="bottom-menu"></div>
         </div>
@@ -59,17 +68,49 @@ export default {
 }
 
 .search-container {
-    height: 26px;
-    margin-bottom: 10px;
+    height: 25px;
 }
 
 .search-input {
+    height: 100%;
     background-color: #363636;
     border: none;
 }
+.search-input::placeholder {
+    font-style: italic;
+    font-size: 0.9rem;
+}
 .search-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
     background-color: #00e07f;
     color: #040806;
     border: none;
+    width: 50px;
+}
+
+.premium-container {
+    justify-self: start;
+}
+.fa-star {
+    font-size: 0.8rem;
+}
+.premium-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #00e07f;
+    color: #040806;
+    border: none;
+    height: 25px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.auth-container a {
+    color: #fff;
+    font-size: 0.8rem;
 }
 </style>
