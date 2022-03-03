@@ -31,7 +31,43 @@
                     <a href="#" class="btn register-btn">Inscrivez-vous !</a>
                 </div>
             </div>
-            <div class="bottom-menu"></div>
+        </div>
+        <div class="menu-divider"></div>
+        <div class="container">
+            <div class="bottom-menu d-flex">
+                <ul class="menu-list list-unstyled w-100 mb-0">
+                    <li class="active">
+                        <a href>ACCUEIL</a>
+                    </li>
+                    <li>
+                        <a href>A PROPOS</a>
+                    </li>
+                    <li>
+                        <a href>
+                            CATÉGORIES
+                            <i class="fa-solid fa-caret-down ms-1"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href>
+                            JOUEURS
+                            <i class="fa-solid fa-caret-down ms-1"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href>LIVESTREAMING</a>
+                    </li>
+                    <li>
+                        <a href>COACHING</a>
+                    </li>
+                    <li>
+                        <a href>SANTÉ E-SPORT</a>
+                    </li>
+                    <li>
+                        <a href>COMMUNAUTÉ</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </template>
@@ -75,6 +111,7 @@ export default {
     height: 100%;
     background-color: #363636;
     border: none;
+    color: #ccc;
 }
 .search-input::placeholder {
     font-style: italic;
@@ -110,7 +147,55 @@ export default {
 }
 
 .auth-container a {
-    color: #fff;
+    color: #ccc;
     font-size: 0.8rem;
+}
+.auth-container a:hover {
+    color: #fff;
+}
+
+.menu-divider {
+    width: 100%;
+    height: 0.5px;
+    background-color: #e3e3e3;
+    opacity: 0.1;
+}
+
+.bottom-menu {
+    height: 40px;
+}
+
+.menu-list {
+    display: grid;
+    grid-template-columns: 163px 163px 163px 163px 163px 163px 163px 163px;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+}
+
+.menu-list li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.menu-list li:hover {
+    cursor: pointer;
+    background: #191919;
+    border-top: 2px solid #252525;
+    border-left: 2px solid #252525;
+    border-right: 2px solid #252525;
+}
+
+.menu-list a {
+    font-size: 0.6rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: #fff;
+}
+.active {
+    border-bottom: 3px solid #00e07f;
 }
 </style>
