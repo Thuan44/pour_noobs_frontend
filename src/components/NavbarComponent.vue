@@ -2,13 +2,13 @@
     <div id="navbar">
         <div class="container">
             <div class="top-menu">
-                <div class="logo-container">
+                <router-link to="/" class="logo-container">
                     <img
                         class="logo-img w-100"
                         src="@/assets/img/logo_horizontal.png"
                         alt="Logo Pour noobs"
                     />
-                </div>
+                </router-link>
                 <div class="input-group search-container">
                     <input
                         type="search"
@@ -28,7 +28,7 @@
                 </div>
                 <div class="auth-container">
                     <a href="#" class="btn register-btn">Se connecter</a>
-                    <a href="#" class="btn register-btn">Inscrivez-vous !</a>
+                    <router-link to="/register" class="btn register-btn">Inscrivez-vous !</router-link>
                 </div>
             </div>
         </div>

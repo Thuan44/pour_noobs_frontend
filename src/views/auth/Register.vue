@@ -17,11 +17,29 @@
                         <h2 class="form-title">Inscription gratuite</h2>
                         <p class="form-subtitle">Venez améliorer votre expérience</p>
                     </div>
-                    <form action="#" method="POST" class="register-form d-flex flex-column p-3">
-                        <input type="text" placeholder="Courriel" />
-                        <input type="text" placeholder="Pseudo (4 caractères minimum)" />
-                        <input type="password" placeholder="Mot de passe (4 caractères minimum)" />
-                        <input type="password" placeholder="Confirmez votre mot de passe" />
+                    <form
+                        @submit.stop.prevent="register"
+                        method="POST"
+                        class="register-form d-flex flex-column p-3"
+                    >
+                        <input type="email" placeholder="Courriel" v-model="email" />
+                        <input
+                            type="text"
+                            placeholder="Pseudo (4 caractères minimum)"
+                            v-model="name"
+                        />
+                        <input
+                            type="password"
+                            placeholder="Mot de passe (4 caractères minimum)"
+                            v-model="password"
+                            autocomplete
+                        />
+                        <input
+                            type="password"
+                            placeholder="Confirmez votre mot de passe"
+                            v-model="password_confirmation"
+                            autocomplete
+                        />
                         <div class="register-buttons d-flex align-items-center">
                             <button type="submit" class="btn submit-btn">Inscrivez-vous !</button>
                             <span class="mx-3 text-white">Ou</span>
@@ -43,6 +61,8 @@
 </template>
 
 <script>
+import { useRouter, useRoute } from 'vue-router'
+import { ref } from "vue"
 import axios from "axios"
 import Navbar from "@/components/NavbarComponent.vue"
 
@@ -50,17 +70,36 @@ export default {
     name: "register",
     components: { Navbar },
     setup() {
+        const router = useRouter()
+        const email = ref('')
+        const name = ref('')
+        const password = ref('')
+        const password_confirmation = ref('')
+
         const postApiUrl = import.meta.env.VITE_AUTH_API_URL
 
-        axios
-            .post(postApiUrl + "register", {
-                email: "tutu@tutu.com",
-                password: "tutu"
-            })
-            .then(response => console.log(response))
-            .catch(e => console.log(e))
+        const register = () => {
+            axios
+                .post(postApiUrl + "register", {
+                    email: email.value,
+                    name: name.value,
+                    password: password.value,
+                    password_confirmation: password_confirmation.value
+                })
+                .then(response => {
+                    if (response.status === 201) {
+                        router.push("/")
+                    } else {
+                        alert("Oups, there was an error. Please try again")
+                    }
+                })
+                .catch(e => {
+                    alert("Oups, there was an error. Please try again")
+                    console.log(e)
+                })
+        }
 
-        return {}
+        return { email, name, password, password_confirmation, register }
     }
 }
 </script>
@@ -96,6 +135,8 @@ export default {
 
 .right-container {
     padding-top: 60px;
+    display: flex;
+    justify-content: center;
 }
 
 .form-container {
@@ -218,6 +259,18 @@ export default {
         align-items: center;
         height: 40px;
         width: 100%;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    .container {
+        max-width: none;
+    }
+    .left-container {
+        display: none;
+    }
+    .right-container {
+        width: 80% !important;
     }
 }
 </style>
