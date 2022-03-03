@@ -198,4 +198,17 @@ export default {
 .active {
     border-bottom: 3px solid #00e07f;
 }
+
+/* Media queries */
+@media only screen and (max-width: 1300px) {
+    .top-menu {
+        display: grid;
+        grid-template-columns: 250px 250px 150px 270px;
+        grid-gap: 5px;
+    }
+    .menu-list {
+        display: grid;
+        grid-template-columns: 110px 110px 110px 110px 110px 110px 110px 110px;
+    }
+}
 </style>
