@@ -89,6 +89,7 @@ export default {
     background-color: #1b1b1b;
 }
 
+/* Top menu */
 .top-menu {
     display: grid;
     grid-template-columns: 250px 500px 300px 270px;
@@ -161,6 +162,7 @@ export default {
     opacity: 0.1;
 }
 
+/* Bottom menu */
 .bottom-menu {
     height: 40px;
 }
@@ -197,5 +199,18 @@ export default {
 }
 .active {
     border-bottom: 3px solid #00e07f;
+}
+
+/* Media queries */
+@media only screen and (max-width: 1300px) {
+    .top-menu {
+        display: grid;
+        grid-template-columns: 250px 250px 150px 270px;
+        grid-gap: 5px;
+    }
+    .menu-list {
+        display: grid;
+        grid-template-columns: 110px 110px 110px 110px 110px 110px 110px 110px;
+    }
 }
 </style>
