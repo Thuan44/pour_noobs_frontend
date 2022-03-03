@@ -27,7 +27,7 @@
                     </a>
                 </div>
                 <div class="auth-container">
-                    <a href="#" class="btn login-btn">Se connecter</a>
+                    <a href="#" class="btn register-btn">Se connecter</a>
                     <a href="#" class="btn register-btn">Inscrivez-vous !</a>
                 </div>
             </div>
