@@ -8,15 +8,11 @@
 
 <script>
 import { ref } from "vue";
-import axios from "axios";
 
 export default {
   name: "Home",
   components: {},
   setup() {
-    const logout = () => {
-      axios.post()
-    }
     return {};
   },
 };

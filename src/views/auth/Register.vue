@@ -22,24 +22,47 @@
                         method="POST"
                         class="register-form d-flex flex-column p-3"
                     >
-                        <input type="email" placeholder="Courriel" v-model="email" />
+                        <input type="text" placeholder="Courriel" v-model="state.email" />
+                        <p v-if="v$.email.$error" class="text-danger mb-0 text-start">
+                            <small>{{ v$.email.$errors[0].$message }}</small>
+                        </p>
                         <input
                             type="text"
                             placeholder="Pseudo (4 caractères minimum)"
-                            v-model="name"
+                            v-model="state.name"
                         />
-                        <input
-                            type="password"
-                            placeholder="Mot de passe (4 caractères minimum)"
-                            v-model="password"
-                            autocomplete
-                        />
-                        <input
-                            type="password"
-                            placeholder="Confirmez votre mot de passe"
-                            v-model="password_confirmation"
-                            autocomplete
-                        />
+                        <p v-if="v$.name.$error" class="text-danger mb-0 text-start">
+                            <small>{{ v$.name.$errors[0].$message }}</small>
+                        </p>
+                        <div class="password-fields">
+                            <div class="password">
+                                <input
+                                    class="w-100"
+                                    type="password"
+                                    placeholder="Mot de passe"
+                                    v-model="state.password"
+                                    autocomplete
+                                />
+                                <p v-if="v$.password.$error" class="text-danger mb-0 text-start">
+                                    <small>{{ v$.password.$errors[0].$message }}</small>
+                                </p>
+                            </div>
+                            <div class="password-confirmation">
+                                <input
+                                    class="w-100"
+                                    type="password"
+                                    placeholder="Confirmer mot de passe"
+                                    v-model="state.password_confirmation"
+                                    autocomplete
+                                />
+                                <p
+                                    v-if="v$.password_confirmation.$error"
+                                    class="text-danger mb-0 text-start"
+                                >
+                                    <small>{{ v$.password_confirmation.$errors[0].$message }}</small>
+                                </p>
+                            </div>
+                        </div>
                         <div class="register-buttons d-flex align-items-center">
                             <button type="submit" class="btn submit-btn">Inscrivez-vous !</button>
                             <span class="mx-3 text-white">Ou</span>
@@ -62,44 +85,67 @@
 
 <script>
 import { useRouter, useRoute } from 'vue-router'
-import { ref } from "vue"
+import { ref, computed, reactive } from "vue"
 import axios from "axios"
 import Navbar from "@/components/NavbarComponent.vue"
+import useVuelidate from '@vuelidate/core'
+import { required, email, sameAs, helpers } from '@vuelidate/validators'
 
 export default {
-    name: "register",
+    name: "Register",
     components: { Navbar },
     setup() {
         const router = useRouter()
-        const email = ref('')
-        const name = ref('')
-        const password = ref('')
-        const password_confirmation = ref('')
+
+        const state = reactive({
+            email: '',
+            name: '',
+            password: '',
+            password_confirmation: ''
+        })
+
+        const rules = computed(() => {
+            return {
+                email: { required: helpers.withMessage('Ce champ est requis', required), email: helpers.withMessage('Le format de l\'email n\'est pas valide', email) },
+                name: { required: helpers.withMessage('Ce champ est requis', required) },
+                password: { required: helpers.withMessage('Ce champ est requis', required) },
+                password_confirmation: { required: helpers.withMessage('Ce champ est requis', required), sameAs: sameAs(state.password) }
+            }
+        })
+
+        const v$ = useVuelidate(rules, state)
 
         const postApiUrl = import.meta.env.VITE_AUTH_API_URL
 
-        const register = () => {
-            axios
-                .post(postApiUrl + "register", {
-                    email: email.value,
-                    name: name.value,
-                    password: password.value,
-                    password_confirmation: password_confirmation.value
-                })
-                .then(response => {
-                    if (response.status === 201) {
-                        router.push("/")
-                    } else {
-                        alert("Oups, there was an error. Please try again")
-                    }
-                })
-                .catch(e => {
-                    alert("Oups, there was an error. Please try again")
-                    console.log(e)
-                })
-        }
+        return { state, v$, postApiUrl }
+    },
+    methods: {
+        async register() {
+            const isFormCorrect = await this.v$.$validate()
 
-        return { email, name, password, password_confirmation, register }
+            if (isFormCorrect) {
+                axios
+                    .post(this.postApiUrl + "register", {
+                        email: this.state.email,
+                        name: this.state.name,
+                        password: this.state.password,
+                        password_confirmation: this.state.password_confirmation
+                    })
+                    .then(response => {
+                        if (response.status === 201) {
+                            router.push("/")
+                        } else {
+                            alert("Oups, there was an error. Please try again")
+                        }
+                    })
+                    .catch(e => {
+                        alert("Oups, there was an error. Please try again")
+                        console.log(e)
+                    })
+            } else {
+                console.log("Some fields are not correct")
+            }
+        }
     }
 }
 </script>
@@ -234,6 +280,16 @@ export default {
     }
     .right-container {
         padding-top: 40px;
+    }
+    .password-fields {
+        display: flex;
+        gap: 10px;
+    }
+    .submit-btn {
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }
 
