@@ -30,14 +30,22 @@
                     <router-link to="/login" class="btn register-btn">Se connecter</router-link>
                     <router-link to="/register" class="btn register-btn">Inscrivez-vous !</router-link>
                 </div>
-                <div v-else class="auth-greetings d-flex dropdown">
+                <div v-else class="toolbar d-flex dropdown align-items-center">
+                    <a href="#" class="text-white text-decoration-none">
+                        <i class="fa-solid fa-cart-shopping text-white me-1"></i>
+                        Panier
+                    </a>
                     <button
                         class="dropdown-toggle profile-btn d-flex"
                         id="profileDropdownBtn"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                     >
-                        <p class="mb-0 me-2">Bonjour {{ store.user.name }} !</p>
+                        <p class="mb-0 me-2 ms-4">
+                            <i v-if="store.user.isAdmin" class="fa-solid fa-user-shield me-1"></i>
+                            <i v-if="!store.user.isAdmin" class="fa-solid fa-user me-1"></i>
+                            Bonjour {{ store.user.name }} !
+                        </p>
                     </button>
                     <ul class="dropdown-menu game-over-menu" aria-labelledby="profileDropdownBtn">
                         <li class="h-100 w-100">
@@ -192,12 +200,9 @@ export default {
 }
 
 .auth-container a,
-.auth-greetings {
+.toolbar {
     color: #ccc;
     font-size: 0.8rem;
-}
-.auth-greetings {
-    margin-right: -60px;
 }
 
 .profile-btn {
