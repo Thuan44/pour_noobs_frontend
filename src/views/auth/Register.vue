@@ -90,7 +90,7 @@ import axios from "axios"
 import Navbar from "@/components/NavbarComponent.vue"
 import useVuelidate from '@vuelidate/core'
 import { required, email, sameAs, helpers } from '@vuelidate/validators'
-import { useUserStore } from '@/store/user.js'
+import { useUser } from '@/store/user.js'
 
 export default {
     name: "Register",
@@ -99,7 +99,7 @@ export default {
     setup() {
         const postApiUrl = import.meta.env.VITE_AUTH_API_URL
         const router = useRouter()
-        const store = useUserStore()
+        const store = useUser()
 
         const state = reactive({
             email: '',

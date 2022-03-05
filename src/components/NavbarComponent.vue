@@ -87,24 +87,25 @@
                 </ul>
             </div>
         </div>
-        <button @click="resetStore">Reset</button>
     </div>
 </template>
 
 <script>
 import { useRouter, useRoute } from 'vue-router'
-import { useUserStore } from '@/store/user.js'
+import { useUser } from '@/store/user.js'
 import axios from "axios"
 
 export default {
     name: "Navbar",
+
     setup() {
         const postApiUrl = import.meta.env.VITE_AUTH_API_URL
         const router = useRouter()
-        const store = useUserStore()
+        const store = useUser()
 
         return { store, postApiUrl, router }
     },
+
     methods: {
         logout() {
             axios
@@ -114,11 +115,14 @@ export default {
                     },
                 })
                 .then(response => {
-                    console.log('Logged out')
+                    localStorage.removeItem("user");
+                    this.store.$reset()
+                    console.log('User logged out successfully')
                 })
                 .catch(e => console.log(e))
-        }
+        },
     },
+
     mounted() {
     }
 }
@@ -216,10 +220,12 @@ export default {
         rgba(0, 0, 0, 0.22) 0px 15px 12px !important;
     inset: 0px auto auto -20px !important;
     border: 1px solid #00e07f;
+    opacity: 0.9;
 }
 
 .game-over-menu:hover {
     background-color: #00e07f;
+    opacity: 1;
 }
 
 .game-over-menu a {
