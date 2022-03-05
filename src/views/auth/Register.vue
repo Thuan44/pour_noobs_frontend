@@ -90,12 +90,16 @@ import axios from "axios"
 import Navbar from "@/components/NavbarComponent.vue"
 import useVuelidate from '@vuelidate/core'
 import { required, email, sameAs, helpers } from '@vuelidate/validators'
+import { useUserStore } from '@/store/user.js'
 
 export default {
     name: "Register",
     components: { Navbar },
+
     setup() {
+        const postApiUrl = import.meta.env.VITE_AUTH_API_URL
         const router = useRouter()
+        const store = useUserStore()
 
         const state = reactive({
             email: '',
@@ -115,14 +119,12 @@ export default {
 
         const v$ = useVuelidate(rules, state)
 
-        const postApiUrl = import.meta.env.VITE_AUTH_API_URL
-
-        return { state, v$, postApiUrl }
+        return { state, v$, postApiUrl, store, router }
     },
+
     methods: {
         async register() {
             const isFormCorrect = await this.v$.$validate()
-
             if (isFormCorrect) {
                 axios
                     .post(this.postApiUrl + "register", {
@@ -133,7 +135,8 @@ export default {
                     })
                     .then(response => {
                         if (response.status === 201) {
-                            router.push("/")
+                            this.store.setUserInfos(this.state.name, this.state.email)
+                            this.router.push("/")
                         } else {
                             alert("Oups, there was an error. Please try again")
                         }
@@ -146,6 +149,9 @@ export default {
                 console.log("Some fields are not correct")
             }
         }
+    },
+
+    mounted() {
     }
 }
 </script>

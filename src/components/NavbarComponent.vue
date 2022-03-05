@@ -26,9 +26,12 @@
                         <i class="fa-solid fa-star me-2"></i> Premium
                     </a>
                 </div>
-                <div class="auth-container">
+                <div v-if="!store.user.isLoggedIn" class="auth-container">
                     <a href="#" class="btn register-btn">Se connecter</a>
                     <router-link to="/register" class="btn register-btn">Inscrivez-vous !</router-link>
+                </div>
+                <div v-else class="auth-greetings">
+                    <p class="mb-0">Bonjour {{ store.user.name }} !</p>
                 </div>
             </div>
         </div>
@@ -73,13 +76,17 @@
 </template>
 
 <script>
+import { useUserStore } from '@/store/user.js'
 
 export default {
     name: "Navbar",
     setup() {
+        const store = useUserStore()
 
-
-        return {}
+        return { store }
+    },
+    mounted() {
+        console.log(this.store.user.isLoggedIn)
     }
 }
 </script>
@@ -147,7 +154,8 @@ export default {
     font-weight: bold;
 }
 
-.auth-container a {
+.auth-container a,
+.auth-greetings {
     color: #ccc;
     font-size: 0.8rem;
 }
