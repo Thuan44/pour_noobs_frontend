@@ -135,7 +135,8 @@ export default {
                     })
                     .then(response => {
                         if (response.status === 201) {
-                            this.store.setUserInfos(this.state.name, this.state.email)
+                            let res = response.data
+                            this.store.setUserInfos(res.user.id, res.user.name, res.user.email, res.token)
                             this.router.push("/")
                         } else {
                             alert("Oups, there was an error. Please try again")

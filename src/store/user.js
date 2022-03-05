@@ -6,12 +6,15 @@ export const useUserStore = defineStore("user", () => {
     id: "",
     name: "Thuan",
     email: "",
+    token: "",
     isLoggedIn: false,
   });
 
-  const setUserInfos = (name, email) => {
+  const setUserInfos = (id, name, email, token) => {
+    user.value.id = id;
     user.value.name = name;
     user.value.email = email;
+    user.value.token = token;
     user.value.isLoggedIn = true;
   };
 
@@ -20,6 +23,9 @@ export const useUserStore = defineStore("user", () => {
   };
   const setUserEmail = (email) => {
     user.value.email = email;
+  };
+  const setUserToken = (token) => {
+    user.value.token = token;
   };
   const logUserIn = () => {
     user.value.isLoggedIn = true;
@@ -33,6 +39,7 @@ export const useUserStore = defineStore("user", () => {
     setUserInfos,
     setUserName,
     setUserEmail,
+    setUserToken,
     logUserIn,
     logUserOut,
   };

@@ -41,7 +41,7 @@
                     </button>
                     <ul class="dropdown-menu game-over-menu" aria-labelledby="profileDropdownBtn">
                         <li class="h-100 w-100">
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="#" @click="logout">
                                 Game Over
                                 <i class="fa-solid fa-skull ms-2"></i>
                             </a>
@@ -91,17 +91,34 @@
 </template>
 
 <script>
+import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/store/user.js'
+import axios from "axios"
 
 export default {
     name: "Navbar",
     setup() {
+        const postApiUrl = import.meta.env.VITE_AUTH_API_URL
+        const router = useRouter()
         const store = useUserStore()
 
-        return { store }
+        return { store, postApiUrl, router }
+    },
+    methods: {
+        logout() {
+            axios
+                .post(this.postApiUrl + 'logout', {}, {
+                    headers: {
+                        Authorization: 'Bearer ' + this.store.user.token
+                    },
+                })
+                .then(response => {
+                    console.log('Logged out')
+                })
+                .catch(e => console.log(e))
+        }
     },
     mounted() {
-        console.log(this.store.user.isLoggedIn)
     }
 }
 </script>
