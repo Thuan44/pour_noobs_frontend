@@ -30,8 +30,23 @@
                     <a href="#" class="btn register-btn">Se connecter</a>
                     <router-link to="/register" class="btn register-btn">Inscrivez-vous !</router-link>
                 </div>
-                <div v-else class="auth-greetings">
-                    <p class="mb-0">Bonjour {{ store.user.name }} !</p>
+                <div v-else class="auth-greetings d-flex dropdown">
+                    <button
+                        class="dropdown-toggle profile-btn d-flex"
+                        id="profileDropdownBtn"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
+                        <p class="mb-0 me-2">Bonjour {{ store.user.name }} !</p>
+                    </button>
+                    <ul class="dropdown-menu game-over-menu" aria-labelledby="profileDropdownBtn">
+                        <li class="h-100 w-100">
+                            <a class="dropdown-item" href="#">
+                                Game Over
+                                <i class="fa-solid fa-skull ms-2"></i>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -159,6 +174,58 @@ export default {
     color: #ccc;
     font-size: 0.8rem;
 }
+.auth-greetings {
+    margin-right: -60px;
+}
+
+.profile-btn {
+    background-color: #1b1b1b;
+    border: none;
+    color: #fff;
+}
+
+.profile-btn::after {
+    margin-top: 8px;
+}
+.game-over-menu {
+    background-color: #1b1b1b;
+    padding: 0;
+    text-align: center;
+    border-radius: 0;
+    height: 50px;
+    margin-top: 9px !important;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
+        rgba(0, 0, 0, 0.22) 0px 15px 12px !important;
+    inset: 0px auto auto -20px !important;
+    border: 1px solid #00e07f;
+}
+
+.game-over-menu:hover {
+    background-color: #00e07f;
+}
+
+.game-over-menu a {
+    color: #fff;
+    background-color: #040806;
+    font-size: 0.9rem;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    transition: background-color 0.3s ease !important;
+}
+
+.game-over-menu a:hover {
+    color: #040806;
+    background-color: #00e07f;
+}
+
+.fa-headset {
+    font-size: 1.1rem;
+}
+
 .auth-container a:hover {
     color: #fff;
 }
