@@ -87,6 +87,7 @@
                 </ul>
             </div>
         </div>
+        <button @click="resetStore">Reset</button>
     </div>
 </template>
 

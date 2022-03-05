@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import { useLocalStorage } from "@vueuse/core";
 
 export const useUserStore = defineStore("user", () => {
   const user = ref({
