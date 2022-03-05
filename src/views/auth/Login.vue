@@ -1,81 +1,43 @@
 <template>
-    <div id="register">
+    <div id="login">
         <div class="container d-flex justify-content-center">
             <div class="left-container w-50">
-                <div class="logo-container">
-                    <img
-                        class="logo-img w-100"
-                        src="@/assets/img/logo_horizontal.png"
-                        alt="Logo Pour noobs"
-                    />
-                </div>
-                <h1 class="register-title">POUR NOOBS A BIEN PLUS QUE VOUS NE PENSEZ À VOUS OFFRIR !</h1>
+                <h1 class="login-title">
+                    <span class="revenez">REVENEZ</span> À VOTRE DERNIER POINT DE SAUVEGARDE !
+                </h1>
             </div>
             <div class="right-container w-50">
                 <div class="form-container">
                     <div class="headings">
-                        <h2 class="form-title">Inscription gratuite</h2>
-                        <p class="form-subtitle">Venez améliorer votre expérience</p>
+                        <h2 class="form-title">Connexion</h2>
+                        <p class="form-subtitle">Prêt à conquérir le monde de l'e-sport ?</p>
                     </div>
                     <form
-                        @submit.stop.prevent="register"
+                        @submit.stop.prevent="login"
                         method="POST"
-                        class="register-form d-flex flex-column p-3"
+                        class="login-form d-flex flex-column p-3"
                     >
                         <input type="text" placeholder="Courriel" v-model="state.email" />
                         <p v-if="v$.email.$error" class="text-danger mb-0 text-start">
                             <small>{{ v$.email.$errors[0].$message }}</small>
                         </p>
-                        <input
-                            type="text"
-                            placeholder="Pseudo (4 caractères minimum)"
-                            v-model="state.name"
-                        />
-                        <p v-if="v$.name.$error" class="text-danger mb-0 text-start">
-                            <small>{{ v$.name.$errors[0].$message }}</small>
-                        </p>
-                        <div class="password-fields">
-                            <div class="password">
-                                <input
-                                    class="w-100"
-                                    type="password"
-                                    placeholder="Mot de passe"
-                                    v-model="state.password"
-                                    autocomplete
-                                />
-                                <p v-if="v$.password.$error" class="text-danger mb-0 text-start">
-                                    <small>{{ v$.password.$errors[0].$message }}</small>
-                                </p>
-                            </div>
-                            <div class="password-confirmation">
-                                <input
-                                    class="w-100"
-                                    type="password"
-                                    placeholder="Confirmer mot de passe"
-                                    v-model="state.password_confirmation"
-                                    autocomplete
-                                />
-                                <p
-                                    v-if="v$.password_confirmation.$error"
-                                    class="text-danger mb-0 text-start"
-                                >
-                                    <small>{{ v$.password_confirmation.$errors[0].$message }}</small>
-                                </p>
-                            </div>
+                        <div class="password">
+                            <input
+                                class="w-100"
+                                type="password"
+                                placeholder="Mot de passe"
+                                v-model="state.password"
+                                autocomplete
+                            />
+                            <p v-if="v$.password.$error" class="text-danger mb-0 text-start">
+                                <small>{{ v$.password.$errors[0].$message }}</small>
+                            </p>
                         </div>
-                        <div class="register-buttons d-flex align-items-center">
-                            <button type="submit" class="btn submit-btn">Inscrivez-vous !</button>
+                        <div class="login-buttons d-flex align-items-center">
+                            <button type="submit" class="btn submit-btn">Connectez-vous !</button>
                             <span class="mx-3 text-white">Ou</span>
-                            <router-link to="/login" class="login-link">Connexion</router-link>
+                            <router-link to="/register" class="register-link">Inscription</router-link>
                         </div>
-                        <p class="text-white terms-conditions">
-                            <small>
-                                En vous inscrivant, vous acceptez nos
-                                <span>
-                                    <a href="1" class="terms-conditions-link">termes et conditions</a>
-                                </span>
-                            </small>
-                        </p>
                     </form>
                 </div>
             </div>
@@ -93,7 +55,7 @@ import { required, email, sameAs, helpers } from '@vuelidate/validators'
 import { useUser } from '@/store/user.js'
 
 export default {
-    name: "Register",
+    name: "Login",
     components: { Navbar },
 
     setup() {
@@ -103,17 +65,13 @@ export default {
 
         const state = reactive({
             email: '',
-            name: '',
             password: '',
-            password_confirmation: ''
         })
 
         const rules = computed(() => {
             return {
                 email: { required: helpers.withMessage('Ce champ est requis', required), email: helpers.withMessage('Le format de l\'email n\'est pas valide', email) },
-                name: { required: helpers.withMessage('Ce champ est requis', required) },
                 password: { required: helpers.withMessage('Ce champ est requis', required) },
-                password_confirmation: { required: helpers.withMessage('Ce champ est requis', required), sameAs: sameAs(state.password) }
             }
         })
 
@@ -123,20 +81,19 @@ export default {
     },
 
     methods: {
-        async register() {
+        async login() {
             const isFormCorrect = await this.v$.$validate()
             if (isFormCorrect) {
                 axios
-                    .post(this.postApiUrl + "register", {
+                    .post(this.postApiUrl + "login", {
                         email: this.state.email,
-                        name: this.state.name,
                         password: this.state.password,
-                        password_confirmation: this.state.password_confirmation
                     })
                     .then(response => {
-                        if (response.status === 201) {
+                        if (response.status === 200) {
                             let res = response.data
                             this.store.setUserInfos(res.user.id, res.user.name, res.user.email, res.token)
+                            res.user.role == "admin" ? this.store.setAsAdmin() : ''
                             this.router.push("/")
                         } else {
                             alert("Oups, there was an error. Please try again")
@@ -158,25 +115,27 @@ export default {
 </script>
 
 <style scoped>
-#register {
+#login {
     height: 90vh;
-    background-image: url("@/assets/img/bg_register.png");
+    background-image: url("@/assets/img/bg_login.png");
     background-repeat: no-repeat, repeat;
     background-size: cover;
     background-position: center;
 }
 
 .left-container {
-    padding-top: 150px;
+    padding-top: 260px;
 }
 
-.logo-container {
-    margin-left: -15px;
-    width: 250px;
-    margin-bottom: 15px;
+.revenez {
+    background-color: #00e07f;
+    color: #040806;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-shadow: none;
 }
 
-.register-title {
+.login-title {
     font-size: 54px;
     width: 80%;
     text-transform: uppercase;
@@ -187,7 +146,7 @@ export default {
 }
 
 .right-container {
-    padding-top: 60px;
+    padding-top: 200px;
     display: flex;
     justify-content: center;
 }
@@ -201,6 +160,7 @@ export default {
     box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset,
         rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
         rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    min-width: 450px;
 }
 
 .form-title {
@@ -219,7 +179,7 @@ export default {
     margin-top: 5px;
 }
 
-.register-form input {
+.login-form input {
     box-sizing: border-box;
     border-radius: 2px;
     border: 1px solid #555;
@@ -231,7 +191,7 @@ export default {
     color: #ccc;
 }
 
-.register-buttons {
+.login-buttons {
     margin-top: 20px;
     margin-bottom: 20px;
 }
@@ -249,7 +209,7 @@ export default {
     filter: brightness(105%);
 }
 
-.login-link {
+.register-link {
     text-decoration: none;
     color: #00e07f;
     font-weight: bold;
@@ -267,7 +227,7 @@ export default {
 /* Media queries */
 @media only screen and (min-width: 1400px) {
     .right-container {
-        padding-top: 100px;
+        padding-top: 180px;
     }
 
     .container {
@@ -278,15 +238,15 @@ export default {
 
 @media only screen and (max-width: 1460px) {
     .left-container {
-        padding-top: 100px;
+        padding-top: 200px;
         padding-left: 100px;
     }
-    .register-title {
+    .login-title {
         font-size: 2.8rem;
         width: 90%;
     }
     .right-container {
-        padding-top: 40px;
+        padding-top: 100px;
     }
     .password-fields {
         display: flex;
@@ -301,18 +261,18 @@ export default {
 }
 
 @media only screen and (max-width: 1300px) {
-    .form-container {
-        transform: scale(0.9);
-    }
     .left-container {
         padding-top: 100px;
         padding-left: 100px;
     }
-    .register-title {
+    .right-container {
+        padding-top: 50px;
+    }
+    .login-title {
         font-size: 2.8rem;
         width: 90%;
     }
-    .register-buttons {
+    .login-buttons {
         flex-direction: column;
         gap: 10px;
     }

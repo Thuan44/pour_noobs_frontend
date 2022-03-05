@@ -27,7 +27,7 @@
                     </a>
                 </div>
                 <div v-if="!store.user.isLoggedIn" class="auth-container">
-                    <a href="#" class="btn register-btn">Se connecter</a>
+                    <router-link to="/login" class="btn register-btn">Se connecter</router-link>
                     <router-link to="/register" class="btn register-btn">Inscrivez-vous !</router-link>
                 </div>
                 <div v-else class="auth-greetings d-flex dropdown">

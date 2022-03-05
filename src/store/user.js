@@ -12,6 +12,7 @@ export const useUser = defineStore("user", {
           name: "",
           email: "",
           token: "",
+          isAdmin: false,
           isLoggedIn: false,
         })
       ),
@@ -37,6 +38,9 @@ export const useUser = defineStore("user", {
     },
     setUserToken(token) {
       this.user.token = token;
+    },
+    setAsAdmin() {
+      this.user.isAdmin = true;
     },
     logUserIn() {
       this.user.isLoggedIn = true;
