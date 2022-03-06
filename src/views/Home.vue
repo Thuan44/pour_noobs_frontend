@@ -78,8 +78,6 @@ export default {
 </script>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700;900&display=swap");
-
 #section1 {
   background-image: url(@/assets/img/bg_layered-peaks-haikei.svg);
 }
@@ -132,7 +130,8 @@ export default {
 }
 .courses-title {
   color: #00e07f;
-  font-family: "Roboto", sans-serif;
+  font-family: "ProximaNova", "Roboto", sans-serif;
+  font-weight: normal;
 }
 .courses-container {
   display: grid;

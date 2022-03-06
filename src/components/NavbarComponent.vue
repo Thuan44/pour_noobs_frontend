@@ -201,6 +201,7 @@ export default {
 
 .auth-container a,
 .toolbar {
+    color: #ccc;
     font-size: 0.8rem;
 }
 
