@@ -31,7 +31,7 @@
                     <router-link to="/register" class="btn register-btn">Inscrivez-vous !</router-link>
                 </div>
                 <div v-else class="toolbar d-flex dropdown align-items-center">
-                    <a href="#" class="text-white text-decoration-none">
+                    <a href="#" class="text-white text-decoration-none cart-btn">
                         <i class="fa-solid fa-cart-shopping text-white me-1"></i>
                         Panier
                     </a>
@@ -201,7 +201,6 @@ export default {
 
 .auth-container a,
 .toolbar {
-    color: #ccc;
     font-size: 0.8rem;
 }
 
@@ -223,7 +222,6 @@ export default {
     margin-top: 9px !important;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
         rgba(0, 0, 0, 0.22) 0px 15px 12px !important;
-    inset: 0px auto auto -20px !important;
     border: 1px solid #00e07f;
     opacity: 0.9;
 }
