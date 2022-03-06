@@ -52,6 +52,7 @@ import axios from "axios"
 import useVuelidate from '@vuelidate/core'
 import { required, email, sameAs, helpers } from '@vuelidate/validators'
 import { useUser } from '@/store/user.js'
+import { useLoading } from 'vue-loading-overlay'
 
 export default {
     name: "Login",
