@@ -4,8 +4,15 @@
         <div class="hero-container d-flex">
             <div class="empty-space"></div>
             <div class="hero-img-container">
-                <img class="hero-img h-100" src="@/assets/img/players/corejj.png" />
+                <img class="hero-img h-100" :src="`../src/assets/img/players/${course.image}`" />
             </div>
+        </div>
+        <div class="hero-content text-white text-start">
+            <h4 class="course-author text-uppercase">{{ course.author }}</h4>
+            <div class="divider"></div>
+            <h1 class="course-name text-uppercase">{{ course.name }}</h1>
+            <p class="course-description">{{ course.description }}</p>
+            <button class="add-btn">S'enrôler pour cette quête</button>
         </div>
     </div>
 </template>
@@ -40,6 +47,7 @@ export default {
     position: relative;
     height: 90vh;
     background-color: #040806;
+    overflow: hidden;
 }
 .left-layer {
     height: 90vh;
@@ -66,8 +74,56 @@ export default {
 .hero-img-container {
     height: 100%;
     transform: translateX(180px);
+    position: relative;
 }
 
-@media only screen and (max-width: 1460px) {
+.hero-content {
+    position: absolute;
+    z-index: 3;
+    top: 100px;
+    left: 10%;
+    max-width: 800px;
+}
+
+.course-author {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+.divider {
+    height: 2px;
+    width: 20px;
+    background-color: #00e07f;
+    margin-bottom: 20px;
+}
+.course-name {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.course-description {
+    font-size: 1.2rem;
+}
+.add-btn {
+    font-size: 1.2rem;
+    background-color: #00e07f;
+    color: #040806;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 3px;
+    font-weight: bold;
+    text-transform: uppercase;
+    box-shadow: 0 0 10px rgba(0, 224, 127, 0.2);
+    transition: 0.1s ease-in;
+    margin-top: 20px;
+}
+.add-btn:hover {
+    box-shadow: 0 0 10px rgba(0, 224, 127, 0.5);
+    filter: brightness(110%);
+}
+
+@media only screen and (min-width: 1460px) {
+    .hero-content {
+        padding-top: 100px;
+    }
 }
 </style>
