@@ -50,6 +50,7 @@ export default {
     const apiUrl = import.meta.env.VITE_AUTH_API_URL
     let courses = ref([])
 
+    // Get courses data
     axios
       .get(apiUrl + 'courses')
       .then(response => {
