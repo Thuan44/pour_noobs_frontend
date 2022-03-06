@@ -104,7 +104,7 @@ import { useUser } from '@/store/user.js'
 import axios from "axios"
 
 export default {
-    name: "Navbar",
+    name: "TheNavbar",
 
     setup() {
         const postApiUrl = import.meta.env.VITE_AUTH_API_URL
