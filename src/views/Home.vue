@@ -17,45 +17,20 @@
           <h3 class="text-start courses-title">Toutes les formations</h3>
           <hr />
           <div class="courses-container mt-4">
-            <div class="card-container">
-              <img src="@/assets/img/players/player1.png" alt class="w-100" />
+            <router-link
+              :to="`/courses/${course.id}`"
+              class="card-container text-decoration-none"
+              v-for="course in courses"
+            >
+              <img :src="`src/assets/img/players/${course.image}`" alt class="w-100" />
               <div class="card-content">
-                <h4 class="course-title">
-                  <i class="fa-solid fa-circle-check me-1"></i>DOUBLELIFT
+                <h4 class="course-title text-uppercase">
+                  <i class="fa-solid fa-circle-check me-1"></i>
+                  {{ course.author }}
                 </h4>
-                <p class="mb-0 course-description">Level up sur League of Legends</p>
+                <p class="mb-0 course-description">{{ course.name.substring(0, 30) + '...' }}</p>
               </div>
-            </div>
-            <div class="card-container">
-              <img src="@/assets/img/players/player2.png" alt class="w-100" />
-              <div class="card-content">
-                <h4 class="course-title">DOUBLELIFT</h4>
-                <p class="mb-0 course-description">Level up sur League of Legends</p>
-              </div>
-            </div>
-            <div class="card-container">
-              <img src="@/assets/img/players/player3.png" alt class="w-100" />
-              <div class="card-content">
-                <h4 class="course-title">DOUBLELIFT</h4>
-                <p class="mb-0 course-description">Level up sur League of Legends</p>
-              </div>
-            </div>
-            <div class="card-container">
-              <img src="@/assets/img/players/player6.png" alt class="w-100" />
-              <div class="card-content">
-                <h4 class="course-title">DOUBLELIFT</h4>
-                <p class="mb-0 course-description">Level up sur League of Legends</p>
-              </div>
-            </div>
-            <div class="card-container">
-              <img src="@/assets/img/players/player7.png" alt class="w-100" />
-              <div class="card-content">
-                <h4 class="course-title">
-                  <i class="fa-solid fa-circle-check me-1"></i>DOUBLELIFT
-                </h4>
-                <p class="mb-0 course-description">Level up sur League of Legends</p>
-              </div>
-            </div>
+            </router-link>
           </div>
         </main>
       </div>
@@ -67,12 +42,22 @@
 
 <script>
 import { ref } from "vue";
+import axios from "axios";
 
 export default {
   name: "Home",
-  components: {},
   setup() {
-    return {};
+    const apiUrl = import.meta.env.VITE_AUTH_API_URL
+    let courses = ref([])
+
+    axios
+      .get(apiUrl + 'courses')
+      .then(response => {
+        courses.value = response.data
+      })
+      .catch(e => console.log(e))
+
+    return { courses };
   },
 };
 </script>
