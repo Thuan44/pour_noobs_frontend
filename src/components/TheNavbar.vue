@@ -63,7 +63,7 @@
             <div class="bottom-menu d-flex">
                 <ul class="menu-list list-unstyled w-100 mb-0">
                     <li class="active">
-                        <router-link to="/" href>ACCUEIL</router-link>
+                        <router-link to="/">ACCUEIL</router-link>
                     </li>
                     <li>
                         <a href>A PROPOS</a>

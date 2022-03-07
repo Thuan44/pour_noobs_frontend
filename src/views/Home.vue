@@ -22,6 +22,15 @@
               class="card-container text-decoration-none"
               v-for="course in courses"
             >
+              <span
+                class="badge bg-primary category-badge"
+                :class="{
+                  'green-badge': course.category_id == 1,
+                  'black-badge': course.category_id == 2,
+                  'white-badge': course.category_id == 3,
+                  'blue-badge': course.category_id == 4,
+                }"
+              >{{ course.category.name }}</span>
               <img :src="`src/assets/img/players/${course.image}`" alt class="w-100" />
               <div class="card-content">
                 <h4 class="course-title text-uppercase">
@@ -142,11 +151,33 @@ export default {
   border-radius: 5px;
   transition: 0.1s ease-in;
   box-shadow: 0 0 10px rgba(0, 224, 127, 0.2);
+  position: relative;
 }
 
 .card-container:hover {
   transform: translateY(-5%);
   box-shadow: 0 0 10px rgba(0, 224, 127, 0.8);
+}
+
+.category-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.green-badge {
+  background-color: #00e07f !important;
+  color: #040806;
+}
+.black-badge {
+  background-color: #040806 !important;
+}
+.white-badge {
+  background-color: #fbfae5 !important;
+  color: #040806;
+}
+.blue-badge {
+  background-color: #6184d8 !important;
 }
 
 .card-container img {
