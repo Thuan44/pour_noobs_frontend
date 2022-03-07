@@ -68,11 +68,25 @@
                     <li>
                         <a href>A PROPOS</a>
                     </li>
-                    <li>
+                    <li class="category-dropdown position-relative">
                         <a href>
                             CATÉGORIES
                             <i class="fa-solid fa-caret-down ms-1"></i>
                         </a>
+                        <div class="category-dropdown-content">
+                            <a href="#" v-for="category in categories">
+                                <div class="category-img-container position-relative">
+                                    <img
+                                        :src="`src/assets/img/categories/${category.image}`"
+                                        alt
+                                        class="w-100 category-img"
+                                    />
+                                    <h5
+                                        class="category-title position-absolute text-uppercase"
+                                    >{{ category.name }}</h5>
+                                </div>
+                            </a>
+                        </div>
                     </li>
                     <li>
                         <a href>
@@ -99,6 +113,7 @@
 </template>
 
 <script>
+import { ref } from "vue";
 import { useRouter, useRoute } from 'vue-router'
 import { useUser } from '@/store/user.js'
 import axios from "axios"
@@ -107,11 +122,22 @@ export default {
     name: "TheNavbar",
 
     setup() {
-        const postApiUrl = import.meta.env.VITE_AUTH_API_URL
+        const apiUrl = import.meta.env.VITE_AUTH_API_URL
         const router = useRouter()
         const store = useUser()
 
-        return { store, postApiUrl, router }
+        let categories = ref([])
+
+        // Get courses data
+        axios
+            .get(apiUrl + 'categories')
+            .then(response => {
+                categories.value = response.data
+                loader.hide()
+            })
+            .catch(e => console.log(e))
+
+        return { store, router, categories }
     },
 
     methods: {
@@ -302,6 +328,49 @@ export default {
 }
 .active {
     border-bottom: 3px solid #00e07f;
+}
+.category-dropdown-content {
+    display: none;
+    position: absolute;
+    top: 215px;
+    left: 204%;
+    transform: translate(-50%, -50%);
+    padding: 80px;
+    width: 1440px;
+    background-color: #040806;
+    box-shadow: 0px 8px 10px 0px rgba(255, 153, 0, 0.2);
+    z-index: 4;
+    border-bottom: 2px solid #ff9900;
+}
+
+.category-dropdown:hover .category-dropdown-content {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    transition: 2s;
+    gap: 40px;
+}
+
+.category-img-container {
+    box-shadow: 0 0 10px 0 rgba(255, 153, 0, 0.2);
+    border-radius: 3px;
+    margin-bottom: 10px;
+    transition: 0.1s ease-in;
+}
+
+.category-img-container:hover {
+    box-shadow: 0 0 10px 0 rgba(255, 153, 0, 0.6);
+    transform: scale(1.05);
+}
+
+.category-img {
+    border-radius: 3px;
+}
+
+.category-title {
+    font-weight: bold;
+    left: 20px;
+    bottom: 10px;
+    text-shadow: 1px 1px 2px rgba(255, 153, 0, 0.9);
 }
 
 /* Media queries */
