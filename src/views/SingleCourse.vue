@@ -1,6 +1,7 @@
 <template>
     <div id="singleCourse">
         <div class="left-layer"></div>
+        <div class="bottom-layer d-none"></div>
         <div class="hero-container d-flex">
             <div class="empty-space"></div>
             <div class="hero-img-container">
@@ -64,6 +65,21 @@ export default {
         rgba(255, 255, 255, 0) 63%
     );
 }
+.bottom-layer {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    z-index: 2;
+    background: rgb(4, 8, 6);
+    background: linear-gradient(
+        0deg,
+        rgba(4, 8, 6, 1) 0%,
+        rgba(4, 8, 6, 1) 30%,
+        rgba(4, 8, 6, 0.7945553221288515) 40%,
+        rgba(4, 8, 6, 0.5788690476190477) 45%,
+        rgba(255, 255, 255, 0) 52%
+    );
+}
 .hero-container {
     height: 100%;
 }
@@ -121,9 +137,49 @@ export default {
     filter: brightness(110%);
 }
 
-@media only screen and (min-width: 1460px) {
+@media only screen and (max-width: 1200px) {
+    .left-layer,
+    .empty-space {
+        display: none;
+    }
+
+    .bottom-layer {
+        display: block !important;
+    }
+
+    .hero-img-container {
+        width: 100%;
+        transform: translateX(0);
+    }
+
+    .hero-img {
+        width: 100%;
+        height: auto !important;
+    }
     .hero-content {
-        padding-top: 100px;
+        text-align: center !important;
+        max-width: 100% !important;
+        width: 90% !important;
+        left: 50%;
+        top: 70%;
+        transform: translate(-50%, -50%);
+    }
+
+    .course-author {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .divider {
+        display: none;
+    }
+
+    .course-name {
+        font-size: 2.5rem;
+    }
+
+    .course-description {
+        font-size: 1rem;
     }
 }
 </style>
