@@ -63,7 +63,7 @@
             <div class="bottom-menu d-flex">
                 <ul class="menu-list list-unstyled w-100 mb-0">
                     <li class="active">
-                        <a href>ACCUEIL</a>
+                        <router-link to="/" href>ACCUEIL</router-link>
                     </li>
                     <li>
                         <a href>A PROPOS</a>
@@ -104,7 +104,7 @@ import { useUser } from '@/store/user.js'
 import axios from "axios"
 
 export default {
-    name: "Navbar",
+    name: "TheNavbar",
 
     setup() {
         const postApiUrl = import.meta.env.VITE_AUTH_API_URL

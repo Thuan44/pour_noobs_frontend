@@ -49,14 +49,12 @@
 import { useRouter, useRoute } from 'vue-router'
 import { ref, computed, reactive } from "vue"
 import axios from "axios"
-import Navbar from "@/components/NavbarComponent.vue"
 import useVuelidate from '@vuelidate/core'
 import { required, email, sameAs, helpers } from '@vuelidate/validators'
 import { useUser } from '@/store/user.js'
 
 export default {
     name: "Login",
-    components: { Navbar },
 
     setup() {
         const postApiUrl = import.meta.env.VITE_AUTH_API_URL
@@ -108,9 +106,6 @@ export default {
             }
         }
     },
-
-    mounted() {
-    }
 }
 </script>
 

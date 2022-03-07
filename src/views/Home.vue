@@ -25,7 +25,7 @@
               <img :src="`src/assets/img/players/${course.image}`" alt class="w-100" />
               <div class="card-content">
                 <h4 class="course-title text-uppercase">
-                  <i class="fa-solid fa-circle-check me-1"></i>
+                  <i v-if="parseInt(course.price) > 50" class="fa-solid fa-circle-check me-1"></i>
                   {{ course.author }}
                 </h4>
                 <p class="mb-0 course-description">{{ course.name.substring(0, 30) + '...' }}</p>
@@ -43,6 +43,7 @@
 <script>
 import { ref } from "vue";
 import axios from "axios";
+import { useLoading } from 'vue-loading-overlay'
 
 export default {
   name: "Home",
@@ -50,10 +51,23 @@ export default {
     const apiUrl = import.meta.env.VITE_AUTH_API_URL
     let courses = ref([])
 
+    // Loading bars
+    const $loading = useLoading()
+    let loader = $loading.show({
+      color: '#00e07f',
+      loader: 'bars',
+      width: 64,
+      height: 64,
+      opacity: 0.8,
+      backgroundColor: '#040806',
+    })
+
+    // Get courses data
     axios
       .get(apiUrl + 'courses')
       .then(response => {
         courses.value = response.data
+        loader.hide()
       })
       .catch(e => console.log(e))
 
