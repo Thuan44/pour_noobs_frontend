@@ -150,7 +150,7 @@ export default {
 .card-container {
   border-radius: 5px;
   transition: 0.1s ease-in;
-  box-shadow: 0 0 10px rgba(0, 224, 127, 0.2);
+  box-shadow: 0 0 10px rgba(0, 224, 127, 0.3);
   position: relative;
 }
 

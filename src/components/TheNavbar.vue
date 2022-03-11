@@ -95,16 +95,16 @@
                         </a>
                     </li>
                     <li>
-                        <a href>LIVESTREAMING</a>
-                    </li>
-                    <li>
-                        <a href>COACHING</a>
-                    </li>
-                    <li>
-                        <a href>SANTÉ E-SPORT</a>
+                        <a href>SPONSORS</a>
                     </li>
                     <li>
                         <a href>COMMUNAUTÉ</a>
+                    </li>
+                    <li>
+                        <a href>BLOG</a>
+                    </li>
+                    <li>
+                        <a href>CONTACT</a>
                     </li>
                 </ul>
             </div>
@@ -133,17 +133,16 @@ export default {
             .get(apiUrl + 'categories')
             .then(response => {
                 categories.value = response.data
-                loader.hide()
             })
             .catch(e => console.log(e))
 
-        return { store, router, categories }
+        return { store, router, categories, apiUrl }
     },
 
     methods: {
         logout() {
             axios
-                .post(this.postApiUrl + 'logout', {}, {
+                .post(this.apiUrl + 'logout', {}, {
                     headers: {
                         Authorization: 'Bearer ' + this.store.user.token
                     },
@@ -383,6 +382,25 @@ export default {
     .menu-list {
         display: grid;
         grid-template-columns: 110px 110px 110px 110px 110px 110px 110px 110px;
+    }
+    .category-dropdown-content {
+        max-width: 1200px;
+        padding: 50px;
+        top: 172px;
+    }
+}
+
+@media only screen and (max-width: 1100px) {
+    .category-dropdown-content {
+        max-width: 1000px;
+        top: 156px;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .category-dropdown-content {
+        max-width: 950px;
+        top: 152px;
     }
 }
 </style>
