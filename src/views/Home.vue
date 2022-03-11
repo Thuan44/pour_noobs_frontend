@@ -53,12 +53,14 @@
 import { ref } from "vue";
 import axios from "axios";
 import { useLoading } from 'vue-loading-overlay'
+import { useUser } from '@/store/user.js'
 
 export default {
   name: "Home",
   setup() {
     const apiUrl = import.meta.env.VITE_AUTH_API_URL
     let courses = ref([])
+    const store = useUser()
 
     // Loading bars
     const $loading = useLoading()
@@ -79,6 +81,18 @@ export default {
         loader.hide()
       })
       .catch(e => console.log(e))
+
+    // Check for user's cart
+    if (store.user.isLoggedIn) {
+      console.log('User is logged in')
+      axios
+        .post(apiUrl + `cart/${store.user.id}`, {}, {
+          headers: {
+            Authorization: 'Bearer ' + store.user.token
+          }
+        })
+        .then(response => store.setCartID(response.data.id))
+    }
 
     return { courses };
   },

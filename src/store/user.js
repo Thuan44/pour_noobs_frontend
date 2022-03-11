@@ -14,6 +14,7 @@ export const useUser = defineStore("user", {
           token: "",
           isAdmin: false,
           isLoggedIn: false,
+          cartID: null,
         })
       ),
     };
@@ -47,6 +48,9 @@ export const useUser = defineStore("user", {
     },
     logUserOut() {
       this.user.isLoggedIn = false;
+    },
+    setCartID(cartID) {
+      this.user.cartID = cartID;
     },
   },
 });
