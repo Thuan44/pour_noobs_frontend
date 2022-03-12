@@ -13,7 +13,10 @@
             <div class="divider"></div>
             <h1 class="course-name text-uppercase">{{ course.name }}</h1>
             <p class="course-description">{{ course.description }}</p>
-            <button class="add-btn">S'enrôler pour cette quête</button>
+            <button
+                class="add-btn"
+                @click="addToCart(store.user.cartID, course.id)"
+            >S'enrôler pour cette quête</button>
         </div>
     </div>
 </template>
@@ -22,6 +25,7 @@
 import { ref } from "vue"
 import axios from "axios"
 import { useRoute } from "vue-router"
+import { useUser } from '@/store/user.js'
 
 export default {
     name: "SingleCourse",
@@ -29,6 +33,7 @@ export default {
         const apiUrl = import.meta.env.VITE_AUTH_API_URL
         const route = useRoute()
         let course = ref({})
+        const store = useUser()
 
         // Get course data 
         axios
@@ -38,8 +43,25 @@ export default {
             })
             .catch(e => console.log(e))
 
-        return { course };
-    }
+        return { course, store, apiUrl };
+
+    },
+    methods: {
+        addToCart(cartID, courseID) {
+            axios
+                .post(this.apiUrl + `cart/addCourseToCart/cart/${cartID}/course/${courseID}`, {}, {
+                    headers: {
+                        Authorization: 'Bearer ' + this.store.user.token
+                    }
+                })
+                .then(response => {
+                    if (response.status === 200) {
+                        alert('Vous avez déjà ajouté cette quête à votre inventaire !')
+                    }
+                })
+                .catch(e => console.log(e))
+        }
+    },
 }
 </script>
 

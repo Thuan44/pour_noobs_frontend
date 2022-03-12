@@ -86,12 +86,13 @@ export default {
     if (store.user.isLoggedIn) {
       console.log('User is logged in')
       axios
-        .post(apiUrl + `cart/${store.user.id}`, {}, {
+        .post(apiUrl + `cart/createOrGetCart/${store.user.id}`, {}, {
           headers: {
             Authorization: 'Bearer ' + store.user.token
           }
         })
         .then(response => store.setCartID(response.data.id))
+        .catch(e => console.log)
     }
 
     return { courses };
