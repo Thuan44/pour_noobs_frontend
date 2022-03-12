@@ -54,6 +54,7 @@ import { ref } from "vue";
 import axios from "axios";
 import { useLoading } from 'vue-loading-overlay'
 import { useUser } from '@/store/user.js'
+import getUserCart from '@/composables/getUserCart'
 
 export default {
   name: "Home",
@@ -84,20 +85,25 @@ export default {
 
     // Check for user's cart
     if (store.user.isLoggedIn) {
-      console.log('User is logged in')
       axios
         .post(apiUrl + `cart/createOrGetCart/${store.user.id}`, {}, {
           headers: {
             Authorization: 'Bearer ' + store.user.token
           }
         })
-        .then(response => store.setCartID(response.data.id))
-        .catch(e => console.log)
+        .then(res => {
+          if (res.status === 200 || res.status === 201) {
+            store.setCartID(res.data.id)
+            getUserCart()
+          }
+        })
+        .catch(e => console.log(e))
     }
 
-    return { courses };
-  },
-};
+    return { courses, apiUrl, store };
+  }
+
+}
 </script>
 
 <style scoped>

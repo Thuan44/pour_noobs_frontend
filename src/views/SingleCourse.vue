@@ -26,6 +26,8 @@ import { ref } from "vue"
 import axios from "axios"
 import { useRoute } from "vue-router"
 import { useUser } from '@/store/user.js'
+import getUserCart from '@/composables/getUserCart'
+
 
 export default {
     name: "SingleCourse",
@@ -55,6 +57,7 @@ export default {
                     }
                 })
                 .then(response => {
+                    getUserCart()
                     if (response.status === 200) {
                         alert('Vous avez déjà ajouté cette quête à votre inventaire !')
                     }

@@ -31,10 +31,15 @@
                     <router-link to="/register" class="btn register-btn">Inscrivez-vous !</router-link>
                 </div>
                 <div v-else class="toolbar d-flex dropdown align-items-center">
-                    <a href="#" class="text-white text-decoration-none cart-btn">
-                        <i class="fa-solid fa-cart-shopping text-white me-1"></i>
+                    <router-link to="/cart" class="text-white text-decoration-none cart-btn">
+                        <i class="fa-solid fa-cart-shopping text-white me-1 position-relative">
+                            <span
+                                v-if="store.user.cartID && store.user.cartCourseNumber > 0"
+                                class="position-absolute start-100 translate-middle badge rounded-pill bg-danger cart-badge"
+                            >{{ store.user.cartCourseNumber }}</span>
+                        </i>
                         Panier
-                    </a>
+                    </router-link>
                     <button
                         class="dropdown-toggle profile-btn d-flex"
                         id="profileDropdownBtn"
@@ -228,6 +233,13 @@ export default {
 .toolbar {
     color: #ccc;
     font-size: 0.8rem;
+}
+
+.cart-badge {
+    font-size: 0.5rem;
+    top: -5px;
+    background-color: #ff9900 !important;
+    color: #040806;
 }
 
 .profile-btn {

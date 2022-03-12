@@ -15,6 +15,8 @@ export const useUser = defineStore("user", {
           isAdmin: false,
           isLoggedIn: false,
           cartID: null,
+          cart: null,
+          cartCourseNumber: null,
         })
       ),
     };
@@ -51,6 +53,12 @@ export const useUser = defineStore("user", {
     },
     setCartID(cartID) {
       this.user.cartID = cartID;
+    },
+    setCart(cart) {
+      this.user.cart = cart;
+    },
+    setCartCourseNumber(cartCourseNumber) {
+      this.user.cartCourseNumber = cartCourseNumber;
     },
   },
 });

@@ -3,6 +3,7 @@ import Home from "@/views/Home.vue";
 import Register from "@/views/auth/Register.vue";
 import Login from "@/views/auth/Login.vue";
 import SingleCourse from "@/views/SingleCourse.vue";
+import Cart from "@/views/Cart.vue";
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: "/courses/:id",
     name: "SingleCourse",
     component: SingleCourse,
+  },
+  {
+    path: "/cart",
+    name: "Cart",
+    component: Cart,
   },
 ];
 
