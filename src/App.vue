@@ -5,11 +5,12 @@
 
 <script>
 import TheNavbar from "./components/TheNavbar.vue"
+import getUserCart from '@/composables/getUserCart'
 
 export default {
   components: { TheNavbar },
   setup() {
-
+    getUserCart()
     return {}
   }
 }

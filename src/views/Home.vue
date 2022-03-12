@@ -50,7 +50,7 @@
 
 
 <script>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import axios from "axios";
 import { useLoading } from 'vue-loading-overlay'
 import { useUser } from '@/store/user.js'

@@ -1,5 +1,6 @@
 <template>
     <div id="singleCourse">
+        <notifications width="400" duration="10000" classes="notification" closeOnClick="true" />
         <div class="left-layer"></div>
         <div class="bottom-layer d-none"></div>
         <div class="hero-container d-flex">
@@ -22,12 +23,12 @@
 </template>
 
 <script>
-import { ref } from "vue"
+import { onMounted, ref } from "vue"
 import axios from "axios"
 import { useRoute } from "vue-router"
 import { useUser } from '@/store/user.js'
 import getUserCart from '@/composables/getUserCart'
-
+import { notify } from "@kyvg/vue3-notification";
 
 export default {
     name: "SingleCourse",
@@ -46,10 +47,11 @@ export default {
             .catch(e => console.log(e))
 
         return { course, store, apiUrl };
-
     },
+
     methods: {
         addToCart(cartID, courseID) {
+
             axios
                 .post(this.apiUrl + `cart/addCourseToCart/cart/${cartID}/course/${courseID}`, {}, {
                     headers: {
@@ -57,16 +59,40 @@ export default {
                     }
                 })
                 .then(response => {
-                    getUserCart()
+                    if (response.status === 201) {
+                        getUserCart()
+                        notify({
+                            title: "<i class='fa-solid fa-fire-flame-curved me-2'></i> FÉLICITATIONS !",
+                            text: "Vous venez d'ajouter cette quête à votre inventaire !",
+                        })
+                    }
                     if (response.status === 200) {
-                        alert('Vous avez déjà ajouté cette quête à votre inventaire !')
+                        notify({
+                            title: "<i class='fa-solid fa-ban'></i> OUPS !",
+                            text: "Cette quête fait déjà partie de votre inventaire",
+                        })
                     }
                 })
                 .catch(e => console.log(e))
+
         }
     },
 }
 </script>
+
+<style>
+.notification {
+    position: absolute;
+    top: 110px !important;
+    right: 0 !important;
+    background-color: #ff9900 !important;
+    border-left: 5px solid #cd7b01;
+    color: #040806 !important;
+    padding: 10px !important;
+    border-radius: 3px;
+    cursor: pointer;
+}
+</style>
 
 <style scoped>
 #singleCourse {

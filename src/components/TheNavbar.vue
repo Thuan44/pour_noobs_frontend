@@ -118,7 +118,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter, useRoute } from 'vue-router'
 import { useUser } from '@/store/user.js'
 import axios from "axios"
