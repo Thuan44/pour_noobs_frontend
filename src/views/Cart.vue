@@ -1,5 +1,7 @@
 <template>
     <div id="cart">
+        <notifications width="400" classes="notification" closeOnClick="true" />
+
         <div class="container pt-4">
             <h3 class="text-start cart-title">Votre inventaire</h3>
             <hr />
@@ -31,6 +33,15 @@
                                     </div>
                                 </td>
                                 <td colspan="5" class="course-price">{{ course.price }}€</td>
+                                <td colspan="1">
+                                    <button
+                                        type="button"
+                                        class="delete-btn"
+                                        @click="destroyCourse(store.user.cart.id, course.id)"
+                                    >
+                                        <i class="fa-solid fa-circle-xmark"></i>
+                                    </button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -39,7 +50,11 @@
                     <h4 class="text-white total-text">Total</h4>
                     <div class="divider"></div>
                     <p class="total-price text-white mb-0">{{ totalPrice }}€</p>
-                    <button class="continue-btn">Accepter ces quêtes</button>
+                    <button
+                        v-if="store.user.cart.courses.length > 1"
+                        class="continue-btn"
+                    >Accepter ces quêtes</button>
+                    <button v-else class="continue-btn">Accepter la quête</button>
                 </div>
             </div>
 
@@ -50,14 +65,31 @@
     </div>
 </template>
 
+<style>
+.notification {
+    position: absolute;
+    top: 110px !important;
+    right: 0 !important;
+    background-color: #ff9900 !important;
+    border-left: 5px solid #cd7b01;
+    color: #040806 !important;
+    padding: 10px !important;
+    border-radius: 3px;
+    cursor: pointer;
+}
+</style>
+
 <script>
 import getUserCart from '@/composables/getUserCart'
 import { useUser } from '@/store/user.js'
 import { computed } from 'vue'
+import axios from "axios"
+import { notify } from "@kyvg/vue3-notification";
 
 export default {
     name: "Cart",
     setup() {
+        const apiUrl = import.meta.env.VITE_AUTH_API_URL
         const store = useUser()
 
         const totalPrice = computed(() => {
@@ -68,9 +100,34 @@ export default {
             return total.toFixed(2);
         })
 
+        const destroyCourse = (cartID, courseID) => {
+            axios
+                .delete(apiUrl + `cart/destroyCourseFromCart/cart/${cartID}/course/${courseID}`, {
+                    headers: {
+                        Authorization: 'Bearer ' + store.user.token
+                    }
+                })
+                .then(response => {
+                    if (response.status === 200) {
+                        getUserCart()
+                        notify({
+                            title: "<i class='fa-solid fa-hand-lizard'></i> PETIT JOUEUR !",
+                            text: "Cette quête ne fait plus partie de votre inventaire",
+                        })
+                    }
+                    if (response.status === 404) {
+                        notify({
+                            title: "<i class='fa-solid fa-ban'></i> OUPS !",
+                            text: "Cette quête n'est pas dans votre inventaire",
+                        })
+                    }
+                })
+                .catch(e => console.log(e))
+        }
+
         getUserCart()
 
-        return { store, totalPrice }
+        return { store, totalPrice, destroyCourse }
     }
 }
 </script>
@@ -100,7 +157,7 @@ export default {
 }
 
 .table-row {
-    border-bottom: 5px solid rgba(0, 224, 127, 0.04);
+    border-bottom: 4px solid rgba(0, 224, 127, 0.04);
 }
 
 .fa-circle-minus {
@@ -125,6 +182,15 @@ export default {
     font-size: 1.2rem;
 }
 
+.delete-btn {
+    background: none;
+    border: none;
+    color: #fff;
+}
+.delete-btn:hover {
+    color: red;
+}
+
 .right-side {
     padding: 0 30px;
     text-align: left;
@@ -139,6 +205,7 @@ export default {
 
 .total-price {
     font-size: 2rem;
+    text-shadow: 2px 2px 3px rgba(0, 224, 127, 0.5);
 }
 
 .continue-btn {
@@ -180,6 +247,9 @@ export default {
 
     .total-text {
         margin-bottom: 0;
+    }
+    .total-price {
+        text-shadow: 2px 2px 3px rgba(255, 153, 0, 0.5) !important;
     }
 
     .continue-btn {

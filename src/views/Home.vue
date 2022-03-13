@@ -79,9 +79,9 @@ export default {
       .get(apiUrl + 'courses')
       .then(response => {
         courses.value = response.data
-        loader.hide()
       })
       .catch(e => console.log(e))
+      .finally(loader.hide())
 
     // Check for user's cart
     if (store.user.isLoggedIn) {
