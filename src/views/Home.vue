@@ -17,7 +17,30 @@
 
         <!-- Main content -->
         <main class="main-content">
-          <h3 class="text-start courses-title">Toutes les formations</h3>
+          <div class="course-heading d-flex justify-content-between align-items-end">
+            <h3 class="text-start courses-title mb-0">Toutes les formations</h3>
+            <button
+              class="btn btn-secondary category-filter mb-0 text-white dropdown-toggle"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Filtre
+              <i class="fa-solid fa-filter"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end filter-dropdown">
+              <li class="category-list-item" @click="selectCategory(null)">
+                <a class="dropdown-item">Toutes</a>
+              </li>
+              <li
+                v-for="category in categories"
+                :key="category.id"
+                class="category-list-item"
+                @click="selectCategory(category.name)"
+              >
+                <a class="dropdown-item">{{ category.name }}</a>
+              </li>
+            </ul>
+          </div>
           <hr />
 
           <!-- Courses -->
@@ -72,7 +95,7 @@
 
 
 <script>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import axios from "axios";
 import { useLoading } from 'vue-loading-overlay';
 import { useUser } from '@/store/user.js';
@@ -85,15 +108,29 @@ export default {
     const apiUrl = import.meta.env.VITE_AUTH_API_URL
     const store = useUser()
     let courses = ref([])
+    let categories = ref([])
+    let selectedCategory = ref(null)
+
+    // Filtered list of courses
+    const filteredCourses = computed(() => {
+      if (!selectedCategory.value) {
+        return courses.value
+      } else {
+        return courses.value.filter((course) => course.category.name === selectedCategory.value)
+      }
+    })
+
+    const selectCategory = categoryName => {
+      selectedCategory.value = categoryName
+    }
 
     // Pagination
     const { currentPage, lastPage, offset, next, prev, pageSize, first } = usePagination({
-      currentPage: 1, pageSize: 5, total: computed(() => courses.value.length),
+      currentPage: 1, pageSize: 5, total: computed(() => filteredCourses.value.length),
     });
     const paginatedCourses = computed(() => {
-      if (!Array.isArray(courses.value)) return [];
-      console.log(currentPage.value)
-      return courses.value.slice(offset.value, offset.value + pageSize.value);
+      if (!Array.isArray(filteredCourses.value)) return [];
+      return filteredCourses.value.slice(offset.value, offset.value + pageSize.value);
     });
 
     // Loading bars
@@ -117,6 +154,14 @@ export default {
       .catch(e => console.log(e))
       .finally(loader.hide())
 
+    // Get courses data
+    axios
+      .get(apiUrl + 'categories')
+      .then(response => {
+        categories.value = response.data
+      })
+      .catch(e => console.log(e))
+
     // Check for user's cart
     if (store.user.isLoggedIn) {
       axios
@@ -135,13 +180,9 @@ export default {
     }
 
     return {
-      courses, apiUrl, store,
-      currentPage,
-      lastPage,
-      next,
-      prev,
-      first,
-      paginatedCourses,
+      courses, categories, apiUrl, store,
+      currentPage, lastPage, next, prev, first, paginatedCourses,
+      filteredCourses, selectedCategory, selectCategory
     };
   }
 
@@ -204,6 +245,52 @@ export default {
   font-family: "ProximaNova", "Roboto", sans-serif;
   font-weight: normal;
 }
+
+.category-filter {
+  opacity: 0.8;
+  font-size: 0.9rem;
+  background: none;
+  border: none;
+  transition: 0.1s ease-in;
+  padding: 0;
+}
+
+.category-filter:hover {
+  opacity: 1;
+}
+
+.category-filter::after {
+  display: none !important;
+}
+
+.filter-dropdown {
+  background-color: rgba(4, 8, 6, 0.95);
+  min-width: 8rem !important;
+  box-shadow: 0 0px 5px rgba(255, 255, 255, 0.2);
+  padding: 0;
+}
+
+.category-list-item {
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+.category-list-item:hover {
+  background-color: #00e07f;
+}
+
+.category-list-item a {
+  color: #fff !important;
+  border-radius: 3px;
+}
+
+.category-list-item a:hover {
+  background-color: #00e07f;
+  color: #040806 !important;
+}
+
 .courses-container {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -274,11 +361,12 @@ export default {
 
 .pagination {
   gap: 10px;
-  background-color: rgba(4, 8, 6, 0.1);
+  background-color: rgba(4, 8, 6, 0.4);
   max-width: 120px;
   margin: 0 auto;
   padding: 2px;
   border-radius: 3px;
+  box-shadow: 0 0 10px rgba(0, 224, 127, 0.1);
 }
 
 .pagination-btn {
