@@ -1,6 +1,6 @@
 <template>
     <div id="cart">
-        <notifications width="400" classes="notification" closeOnClick="true" />
+        <notifications width="400" classes="notification" />
 
         <div class="container pt-4">
             <h3 class="text-start cart-title">Votre inventaire</h3>

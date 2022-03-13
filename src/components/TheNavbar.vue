@@ -253,6 +253,7 @@ export default {
 }
 .game-over-menu {
     background-color: #1b1b1b;
+    border-radius: 3px !important;
     padding: 0;
     text-align: center;
     border-radius: 0;
@@ -272,6 +273,7 @@ export default {
 .game-over-menu a {
     color: #fff;
     background-color: #040806;
+    border-radius: 3px !important;
     font-size: 0.9rem;
     width: 100%;
     height: 100%;

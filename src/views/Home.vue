@@ -2,6 +2,7 @@
   <div id="home">
     <div id="section1">
       <div class="container pt-4">
+        <!-- Intro banner -->
         <div class="intro-banner w-100 position-relative">
           <div class="home-heading">
             <h1 class="home-title">Pour tous les noobs...</h1>
@@ -13,14 +14,19 @@
             class="intro-banner-img w-100"
           />
         </div>
+
+        <!-- Main content -->
         <main class="main-content">
           <h3 class="text-start courses-title">Toutes les formations</h3>
           <hr />
+
+          <!-- Courses -->
           <div class="courses-container mt-4">
             <router-link
               :to="`/courses/${course.id}`"
               class="card-container text-decoration-none"
-              v-for="course in courses"
+              v-for="course in paginatedCourses"
+              :key="course.id"
             >
               <span
                 class="badge bg-primary category-badge"
@@ -41,6 +47,22 @@
               </div>
             </router-link>
           </div>
+
+          <!-- Pagination -->
+          <div
+            v-if="courses.length > 0"
+            class="pagination text-white mt-5 d-flex justify-content-center align-items-center"
+          >
+            <button @click="prev" class="pagination-btn prev-btn">
+              <i class="fa-solid fa-caret-left"></i>
+            </button>
+            <div class="pagination-page">
+              <p class="mb-0">{{ currentPage }} / {{ lastPage }}</p>
+            </div>
+            <button @click="next" class="pagination-btn next-btn">
+              <i class="fa-solid fa-caret-right"></i>
+            </button>
+          </div>
         </main>
       </div>
     </div>
@@ -50,18 +72,29 @@
 
 
 <script>
-import { onMounted, ref } from "vue";
+import { ref, computed } from "vue";
 import axios from "axios";
-import { useLoading } from 'vue-loading-overlay'
-import { useUser } from '@/store/user.js'
-import getUserCart from '@/composables/getUserCart'
+import { useLoading } from 'vue-loading-overlay';
+import { useUser } from '@/store/user.js';
+import getUserCart from '@/composables/getUserCart';
+import { usePagination } from "vue-composable";
 
 export default {
   name: "Home",
   setup() {
     const apiUrl = import.meta.env.VITE_AUTH_API_URL
-    let courses = ref([])
     const store = useUser()
+    let courses = ref([])
+
+    // Pagination
+    const { currentPage, lastPage, offset, next, prev, pageSize, first } = usePagination({
+      currentPage: 1, pageSize: 5, total: computed(() => courses.value.length),
+    });
+    const paginatedCourses = computed(() => {
+      if (!Array.isArray(courses.value)) return [];
+      console.log(currentPage.value)
+      return courses.value.slice(offset.value, offset.value + pageSize.value);
+    });
 
     // Loading bars
     const $loading = useLoading()
@@ -79,6 +112,7 @@ export default {
       .get(apiUrl + 'courses')
       .then(response => {
         courses.value = response.data
+        first()
       })
       .catch(e => console.log(e))
       .finally(loader.hide())
@@ -100,7 +134,15 @@ export default {
         .catch(e => console.log(e))
     }
 
-    return { courses, apiUrl, store };
+    return {
+      courses, apiUrl, store,
+      currentPage,
+      lastPage,
+      next,
+      prev,
+      first,
+      paginatedCourses,
+    };
   }
 
 }
@@ -117,7 +159,7 @@ export default {
 
 #section1,
 #section2 {
-  height: 90vh;
+  height: 100vh;
   background-repeat: no-repeat, repeat;
   background-size: cover;
   background-position: center;
@@ -228,6 +270,29 @@ export default {
 .course-description {
   font-size: 0.9rem;
   color: #6f7c8b;
+}
+
+.pagination {
+  gap: 10px;
+  background-color: rgba(4, 8, 6, 0.1);
+  max-width: 120px;
+  margin: 0 auto;
+  padding: 2px;
+  border-radius: 3px;
+}
+
+.pagination-btn {
+  border: none;
+  background: none;
+  color: #fff;
+}
+
+.pagination-btn:hover {
+  color: #00e07f;
+}
+
+.pagination-page {
+  width: 40px !important;
 }
 
 /* Media queries */
