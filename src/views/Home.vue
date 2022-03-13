@@ -97,9 +97,10 @@
 <script>
 import { ref, computed, watch } from "vue";
 import axios from "axios";
-import { useLoading } from 'vue-loading-overlay';
 import { useUser } from '@/store/user.js';
 import getUserCart from '@/composables/getUserCart';
+import getCourses from '@/composables/getCourses';
+import getCategories from '@/composables/getCategories';
 import { usePagination } from "vue-composable";
 
 export default {
@@ -107,8 +108,8 @@ export default {
   setup() {
     const apiUrl = import.meta.env.VITE_AUTH_API_URL
     const store = useUser()
-    let courses = ref([])
-    let categories = ref([])
+    let courses = getCourses()
+    let categories = getCategories()
     let selectedCategory = ref(null)
 
     // Filtered list of courses
@@ -133,35 +134,6 @@ export default {
       return filteredCourses.value.slice(offset.value, offset.value + pageSize.value);
     });
 
-    // Loading bars
-    const $loading = useLoading()
-    let loader = $loading.show({
-      color: '#00e07f',
-      loader: 'bars',
-      width: 64,
-      height: 64,
-      opacity: 0.8,
-      backgroundColor: '#040806',
-    })
-
-    // Get courses data
-    axios
-      .get(apiUrl + 'courses')
-      .then(response => {
-        courses.value = response.data
-        first()
-      })
-      .catch(e => console.log(e))
-      .finally(loader.hide())
-
-    // Get courses data
-    axios
-      .get(apiUrl + 'categories')
-      .then(response => {
-        categories.value = response.data
-      })
-      .catch(e => console.log(e))
-
     // Check for user's cart
     if (store.user.isLoggedIn) {
       axios
@@ -178,6 +150,11 @@ export default {
         })
         .catch(e => console.log(e))
     }
+
+    // Set pagination to first page when courses are loaded
+    watch(courses, () => {
+      first();
+    })
 
     return {
       courses, categories, apiUrl, store,

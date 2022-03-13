@@ -122,6 +122,8 @@ import { onMounted, ref } from "vue";
 import { useRouter, useRoute } from 'vue-router'
 import { useUser } from '@/store/user.js'
 import axios from "axios"
+import getUserCart from '@/composables/getUserCart';
+import getCategories from '@/composables/getCategories';
 
 export default {
     name: "TheNavbar",
@@ -130,16 +132,9 @@ export default {
         const apiUrl = import.meta.env.VITE_AUTH_API_URL
         const router = useRouter()
         const store = useUser()
+        let categories = getCategories()
 
-        let categories = ref([])
-
-        // Get courses data
-        axios
-            .get(apiUrl + 'categories')
-            .then(response => {
-                categories.value = response.data
-            })
-            .catch(e => console.log(e))
+        getUserCart()
 
         return { store, router, categories, apiUrl }
     },

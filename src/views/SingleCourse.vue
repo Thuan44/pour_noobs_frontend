@@ -32,11 +32,11 @@
 </template>
 
 <script>
-import { onMounted, ref } from "vue"
 import axios from "axios"
 import { useRoute } from "vue-router"
 import { useUser } from '@/store/user.js'
 import getUserCart from '@/composables/getUserCart'
+import getSingleCourse from '@/composables/getSingleCourse'
 import { notify } from "@kyvg/vue3-notification";
 
 export default {
@@ -44,16 +44,8 @@ export default {
     setup() {
         const apiUrl = import.meta.env.VITE_AUTH_API_URL
         const route = useRoute()
-        let course = ref({})
         const store = useUser()
-
-        // Get course data 
-        axios
-            .get(apiUrl + 'courses/' + route.params.id)
-            .then(response => {
-                course.value = response.data
-            })
-            .catch(e => console.log(e))
+        let course = getSingleCourse(route.params.id)
 
         return { course, store, apiUrl };
     },

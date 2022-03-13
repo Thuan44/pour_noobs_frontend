@@ -6,6 +6,7 @@
 <script>
 import TheNavbar from "./components/TheNavbar.vue"
 import getUserCart from '@/composables/getUserCart'
+import { onMounted } from "vue"
 
 export default {
   components: { TheNavbar },
