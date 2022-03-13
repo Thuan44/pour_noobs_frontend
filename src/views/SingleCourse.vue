@@ -1,6 +1,7 @@
 <template>
     <div id="singleCourse">
-        <notifications width="400" duration="10000" classes="notification" closeOnClick="true" />
+        <notifications width="400" classes="notification" closeOnClick="true" />
+
         <div class="left-layer"></div>
         <div class="bottom-layer d-none"></div>
         <div class="hero-container d-flex">
@@ -10,10 +11,18 @@
             </div>
         </div>
         <div class="hero-content text-white text-start">
-            <h4 class="course-author text-uppercase">{{ course.author }}</h4>
+            <h4 class="course-author text-uppercase">
+                <i v-if="parseInt(course.price) > 50" class="fa-solid fa-circle-check me-1"></i>
+                {{ course.author }}
+            </h4>
             <div class="divider"></div>
             <h1 class="course-name text-uppercase">{{ course.name }}</h1>
             <p class="course-description">{{ course.description }}</p>
+            <div class="price-container d-flex w-50 justify-content-center align-items-center">
+                <div class="small-divider"></div>
+                <p class="course-price mb-0">{{ course.price }} €</p>
+                <div class="small-divider"></div>
+            </div>
             <button
                 class="add-btn"
                 @click="addToCart(store.user.cartID, course.id)"
@@ -152,6 +161,24 @@ export default {
     max-width: 800px;
 }
 
+.fa-circle-check {
+    font-size: 1.4rem;
+    color: #6184d8;
+    position: relative;
+}
+
+.fa-circle-check::after {
+    content: "";
+    width: 15px;
+    height: 15px;
+    border-radius: 50px;
+    background-color: white;
+    position: absolute;
+    z-index: -1;
+    top: 5px;
+    left: 4px;
+}
+
 .course-author {
     font-size: 1.8rem;
     font-weight: bold;
@@ -169,6 +196,24 @@ export default {
 
 .course-description {
     font-size: 1.2rem;
+}
+
+.price-container {
+    width: 330px !important;
+    gap: 20px;
+}
+
+.course-price {
+    width: 300px;
+    font-weight: bold;
+    font-size: 1.4rem;
+    text-align: center;
+}
+
+.small-divider {
+    height: 2px;
+    width: 100%;
+    background-color: #00e07f;
 }
 .add-btn {
     font-size: 1.2rem;
@@ -231,6 +276,10 @@ export default {
 
     .course-description {
         font-size: 1rem;
+    }
+
+    .price-container {
+        margin: 0 auto;
     }
 }
 </style>

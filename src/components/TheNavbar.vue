@@ -38,7 +38,7 @@
                                 class="position-absolute start-100 translate-middle badge rounded-pill bg-danger cart-badge"
                             >{{ store.user.cartCourseNumber }}</span>
                         </i>
-                        Panier
+                        Inventaire
                     </router-link>
                     <button
                         class="dropdown-toggle profile-btn d-flex"
