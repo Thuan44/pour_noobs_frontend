@@ -1,6 +1,6 @@
 <template>
     <div id="singleCourse">
-        <notifications width="400" classes="notification" closeOnClick="true" />
+        <notifications width="400" classes="notification" />
 
         <div class="left-layer"></div>
         <div class="bottom-layer d-none"></div>
