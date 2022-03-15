@@ -7,7 +7,7 @@
         <div class="hero-container d-flex">
             <div class="empty-space"></div>
             <div class="hero-img-container">
-                <img class="hero-img h-100" :src="`../src/assets/img/players/${course.image}`" />
+                <img class="hero-img h-100" :src="`/assets/img/players/${course.image}`" />
             </div>
         </div>
         <div class="hero-content text-white text-start">
