@@ -60,7 +60,7 @@
                   'blue-badge': course.category_id == 4,
                 }"
               >{{ course.category.name }}</span>
-              <img :src="`@/assets/img/players/${course.image}`" alt class="w-100" />
+              <img :src="`src/assets/img/players/${course.image}`" alt class="w-100" />
               <div class="card-content">
                 <h4 class="course-title text-uppercase">
                   <i v-if="parseInt(course.price) > 50" class="fa-solid fa-circle-check me-1"></i>

@@ -82,7 +82,7 @@
                             <a href="#" v-for="category in categories">
                                 <div class="category-img-container position-relative">
                                     <img
-                                        :src="`@/assets/img/categories/${category.image}`"
+                                        :src="`src/assets/img/categories/${category.image}`"
                                         alt
                                         class="w-100 category-img"
                                     />
