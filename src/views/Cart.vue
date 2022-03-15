@@ -20,7 +20,7 @@
                                 <td colspan="1" class="p-0" style="width: 150px !important;">
                                     <div class="img-container mx-auto d-block">
                                         <img
-                                            :src="`src/assets/img/players/${course.image}`"
+                                            :src="`/assets/img/players/${course.image}`"
                                             alt
                                             class="w-100 course-img d-block"
                                         />
