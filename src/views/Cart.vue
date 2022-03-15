@@ -125,7 +125,9 @@ export default {
                 .catch(e => console.log(e))
         }
 
-        getUserCart()
+        if (store.user.cart) {
+            getUserCart()
+        }
 
         return { store, totalPrice, destroyCourse }
     }

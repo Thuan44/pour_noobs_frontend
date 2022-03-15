@@ -5,13 +5,17 @@
 
 <script>
 import TheNavbar from "./components/TheNavbar.vue"
+import { useUser } from '@/store/user.js'
 import getUserCart from '@/composables/getUserCart'
-import { onMounted } from "vue"
 
 export default {
   components: { TheNavbar },
   setup() {
-    getUserCart()
+    const store = useUser()
+
+    if (store.user.cart) {
+      getUserCart()
+    }
     return {}
   }
 }

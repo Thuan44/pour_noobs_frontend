@@ -118,7 +118,6 @@
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
 import { useRouter, useRoute } from 'vue-router'
 import { useUser } from '@/store/user.js'
 import axios from "axios"
@@ -134,7 +133,9 @@ export default {
         const store = useUser()
         let categories = getCategories()
 
-        getUserCart()
+        if (store.user.cart) {
+            getUserCart()
+        }
 
         return { store, router, categories, apiUrl }
     },
