@@ -98,6 +98,7 @@
 import { ref, computed, watch } from "vue";
 import axios from "axios";
 import { useUser } from '@/store/user.js';
+import getUserCart from '@/composables/getUserCart'
 import getCourses from '@/composables/getCourses';
 import getCategories from '@/composables/getCategories';
 import { usePagination } from "vue-composable";
