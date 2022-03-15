@@ -61,9 +61,7 @@ export default {
                 })
                 .then(response => {
                     if (response.status === 201) {
-                        if (store.user.isLoggedIn) {
-                            getUserCart()
-                        }
+                        getUserCart()
                         notify({
                             title: "<i class='fa-solid fa-fire-flame-curved me-2'></i> FÉLICITATIONS !",
                             text: "Vous venez d'ajouter cette quête à votre inventaire !",
