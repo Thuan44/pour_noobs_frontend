@@ -68,7 +68,7 @@
                             <span class="mx-3 text-white">Ou</span>
                             <router-link to="/login" class="login-link">Connexion</router-link>
                         </div>
-                        <p class="text-white terms-conditions">
+                        <p class="text-white terms-conditions mb-0">
                             <small>
                                 En vous inscrivant, vous acceptez nos
                                 <span>
@@ -244,7 +244,7 @@ export default {
 }
 
 .submit-btn:hover {
-    filter: brightness(105%);
+    filter: brightness(115%);
 }
 
 .login-link {
