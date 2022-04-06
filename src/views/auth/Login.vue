@@ -33,11 +33,40 @@
                                 <small>{{ v$.password.$errors[0].$message }}</small>
                             </p>
                         </div>
-                        <div class="login-buttons d-flex align-items-center">
-                            <button type="submit" class="btn submit-btn">Connectez-vous !</button>
-                            <span class="mx-3 text-white">Ou</span>
-                            <router-link to="/register" class="register-link">Inscription</router-link>
+                        <div class="login-buttons d-flex flex-column align-items-center">
+                            <div class="classic-login d-flex align-items-center mb-3">
+                                <button
+                                    type="submit"
+                                    class="btn submit-btn"
+                                    name="classic"
+                                >Connectez-vous !</button>
+                                <span class="mx-3 text-white">Ou</span>
+                                <router-link to="/register" class="register-link">Inscription</router-link>
+                            </div>
+                            <div class="oauth-login w-100">
+                                <form
+                                    @submit.stop.prevent="githubLogin"
+                                    method="POST"
+                                    class="login-form"
+                                >
+                                    <button
+                                        type="submit"
+                                        class="btn github-btn w-100"
+                                        name="github"
+                                    >
+                                        <i class="fa-brands fa-github"></i> Connectez-vous avec Github
+                                    </button>
+                                </form>
+                            </div>
                         </div>
+                        <p class="text-white terms-conditions mb-0">
+                            <small>
+                                En vous inscrivant, vous acceptez nos
+                                <span>
+                                    <a href="1" class="terms-conditions-link">termes et conditions</a>
+                                </span>
+                            </small>
+                        </p>
                     </form>
                 </div>
             </div>
@@ -104,6 +133,29 @@ export default {
             } else {
                 console.log("Some fields are not correct")
             }
+        },
+
+        async githubLogin() {
+            axios
+                .post(this.postApiUrl + "sign-in/github", {
+                    header: {
+                        "Access-Control-Allow-Origin": window.location.origin
+                    }
+                })
+                .then(response => {
+                    if (response.status === 200) {
+                        let res = response.data
+                        this.store.setUserInfos(res.user.id, res.user.name, res.user.email, res.token)
+                        res.user.role == "admin" ? this.store.setAsAdmin() : ''
+                        this.router.push("/")
+                    } else {
+                        alert("Oups, there was an error with Github. Please try again")
+                    }
+                })
+                .catch(e => {
+                    alert("Oups, there was an error with Github. Please try again")
+                    console.log(e)
+                })
         }
     },
 }
@@ -198,10 +250,22 @@ export default {
     padding: 15px 20px;
     font-size: 17px;
     font-weight: bold;
+    transition: 0.2s ease-in-out;
 }
 
 .submit-btn:hover {
-    filter: brightness(105%);
+    filter: brightness(115%);
+}
+
+.github-btn {
+    background-color: #313131;
+    color: #fff;
+    transition: 0.2s ease-in-out;
+    padding: 6px;
+}
+
+.github-btn:hover {
+    filter: brightness(135%);
 }
 
 .register-link {
