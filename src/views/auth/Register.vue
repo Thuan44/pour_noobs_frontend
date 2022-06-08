@@ -72,7 +72,7 @@
                             <small>
                                 En vous inscrivant, vous acceptez nos
                                 <span>
-                                    <a href="1" class="terms-conditions-link">termes et conditions</a>
+                                    <a href="#" class="terms-conditions-link">termes et conditions</a>
                                 </span>
                             </small>
                         </p>
