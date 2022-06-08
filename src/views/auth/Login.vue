@@ -164,7 +164,7 @@ export default {
 </script>
 
 <style scoped>
-#login {
+#login{
     height: 90vh;
     background-image: url("@/assets/img/bg_login.png");
     background-repeat: no-repeat, repeat;
