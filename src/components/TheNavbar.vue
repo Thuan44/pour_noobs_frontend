@@ -71,7 +71,7 @@
                         <router-link to="/">ACCUEIL</router-link>
                     </li>
                     <li>
-                        <a href>A PROPOS</a>
+                        <router-link to="/about">A PROPOS</router-link>
                     </li>
                     <li class="category-dropdown position-relative">
                         <a href>
@@ -94,22 +94,22 @@
                         </div>
                     </li>
                     <li>
-                        <a href>
+                        <router-link to="/players">
                             JOUEURS
                             <i class="fa-solid fa-caret-down ms-1"></i>
-                        </a>
+                        </router-link>
                     </li>
                     <li>
-                        <a href>SPONSORS</a>
+                        <router-link to="/sponsors">SPONSORS</router-link>
                     </li>
                     <li>
-                        <a href>COMMUNAUTÉ</a>
+                        <router-link to="/community">COMMUNAUTÉ</router-link>
                     </li>
                     <li>
-                        <a href>BLOG</a>
+                        <router-link to="/blog">BLOG</router-link>
                     </li>
                     <li>
-                        <a href>CONTACT</a>
+                        <router-link to="/contaco">CONTACT</router-link>
                     </li>
                 </ul>
             </div>
