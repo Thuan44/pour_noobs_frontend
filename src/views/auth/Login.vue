@@ -54,7 +54,7 @@
                                         class="btn github-btn w-100"
                                         name="github"
                                     >
-                                        <i class="fa-brands fa-github"></i> Connectez-vous avec Github
+                                        <i class="fa-brands fa-github me-2"></i> Connectez-vous avec Github
                                     </button>
                                 </form>
                             </div>
@@ -63,7 +63,7 @@
                             <small>
                                 En vous inscrivant, vous acceptez nos
                                 <span>
-                                    <a href="1" class="terms-conditions-link">termes et conditions</a>
+                                    <a href="#" class="terms-conditions-link">termes et conditions</a>
                                 </span>
                             </small>
                         </p>
@@ -81,6 +81,7 @@ import axios from "axios"
 import useVuelidate from '@vuelidate/core'
 import { required, email, sameAs, helpers } from '@vuelidate/validators'
 import { useUser } from '@/store/user.js'
+ import { useAuth0 } from '@auth0/auth0-vue';
 
 export default {
     name: "Login",
@@ -89,6 +90,7 @@ export default {
         const postApiUrl = import.meta.env.VITE_AUTH_API_URL
         const router = useRouter()
         const store = useUser()
+        const { loginWithRedirect } = useAuth0();
 
         const state = reactive({
             email: '',
@@ -135,27 +137,27 @@ export default {
             }
         },
 
-        async githubLogin() {
-            axios
-                .post(this.postApiUrl + "sign-in/github", {
-                    header: {
-                        "Access-Control-Allow-Origin": window.location.origin
-                    }
-                })
-                .then(response => {
-                    if (response.status === 200) {
-                        let res = response.data
-                        this.store.setUserInfos(res.user.id, res.user.name, res.user.email, res.token)
-                        res.user.role == "admin" ? this.store.setAsAdmin() : ''
-                        this.router.push("/")
-                    } else {
-                        alert("Oups, there was an error with Github. Please try again")
-                    }
-                })
-                .catch(e => {
-                    alert("Oups, there was an error with Github. Please try again")
-                    console.log(e)
-                })
+        // async githubLogin() {
+        //     axios
+        //         .post(this.postApiUrl + "sign-in/github", {})
+        //         .then(response => {
+        //             if (response.status === 200) {
+        //                 let res = response.data
+        //                 this.store.setUserInfos(res.user.id, res.user.name, res.user.email, res.token)
+        //                 res.user.role == "admin" ? this.store.setAsAdmin() : ''
+        //                 this.router.push("/")
+        //             } else {
+        //                 alert("Oups, there was an error with Github. Please try again")
+        //             }
+        //         })
+        //         .catch(e => {
+        //             alert("Oups, there was an error with Github. Please try again")
+        //             console.log(e)
+        //         })
+        // },
+
+        githubLogin(){
+            this.$auth0.loginWithRedirect();
         }
     },
 }
@@ -247,7 +249,7 @@ export default {
     width: 280px;
     background: #00e07f;
     color: #040806;
-    padding: 15px 20px;
+    padding: 12px 15px;
     font-size: 17px;
     font-weight: bold;
     transition: 0.2s ease-in-out;
@@ -261,7 +263,7 @@ export default {
     background-color: #313131;
     color: #fff;
     transition: 0.2s ease-in-out;
-    padding: 6px;
+    padding: 12px 15px;
 }
 
 .github-btn:hover {
